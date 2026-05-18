@@ -1,313 +1,493 @@
-export default function Portfolio() {
-  const profile = {
-    name: "Bhim KC",
-    role: "Project Manager • Product Builder • Military Leader",
-    headline: "Military leader, finance-minded builder, and project-driven technologist.",
-    subheadline:
-      "12+ years of military background, strong finance understanding, and a foundation in Computer Science and Applied Mathematics. Building practical products in military fitness and finance while pursuing high-impact project and product opportunities.",
-    email: "bhim.b.kc90@gmail.com",
-    linkedin: "https://www.linkedin.com/in/bhimkc/",
-    github: "https://github.com/Bhimkc90",
-    image: "/profile.jpg",
-    hero: "/hero.jpg",
-  };
+"use client";
 
-  const stats = [
-    { value: "12+", label: "Years Military Background" },
-    { value: "CS + Math", label: "Academic Foundation" },
-    { value: "2", label: "Core Products in Progress" },
-  ];
+import React, { useState } from "react";
+import {
+  Download,
+  Grid2X2,
+  Mail,
+  MapPin,
+  Code2,
+  Network,
+  Sigma,
+  ShieldCheck,
+  BriefcaseBusiness,
+  GraduationCap,
+  Star,
+} from "lucide-react";
 
-  const highlights = [
-    {
-      title: "Military Leadership",
-      text: "Experienced in accountability, mission execution, operational discipline, and leading people in demanding environments.",
-    },
-    {
-      title: "Finance Understanding",
-      text: "Strong interest in military pay systems, financial logic, budgeting, and building useful financial tools with practical value.",
-    },
-    {
-      title: "Technical Builder",
-      text: "Grounded in Computer Science and Applied Mathematics with a focus on structured problem-solving, product thinking, and execution.",
-    },
-  ];
+const experienceDetails = {
+  "Software Engineering": [
+    "Built multiple software projects using React, Node.js, Next.js, and Tailwind CSS.",
+    "Strong knowledge of HTML, CSS, JavaScript, and modern frontend development.",
+    "Experience designing and creating databases for application systems.",
+    "Worked with MySQL, Oracle Database, and PostgreSQL.",
+    "Programming experience with Java, C++, and Python.",
+    "Able to write code, structure systems, design data models, and connect frontend, backend, and database layers.",
+  ],
+  "Project Management": [
+    "Experienced in leading projects from planning through execution.",
+    "Able to define project specifications and break large projects into smaller manageable tasks.",
+    "Experience distributing work to team members based on responsibilities and capability.",
+    "Tracked team progress, organized meetings, and communicated project status.",
+    "Focused on meeting deadlines and ensuring each team member understands assigned tasks.",
+    "Led, mentored, coached, and managed staff while providing resources and removing obstacles.",
+    "Experienced in planning, building projects, solving problems, and communicating with stakeholders.",
+  ],
+  "Mathematics & Analytics": [
+    "Extensive mathematics background through Calculus IV, abstract algebra, differential equations, and statistics.",
+    "Strong mathematical problem-solving ability across multiple areas of applied and theoretical mathematics.",
+    "Able to understand key mathematical concepts that support algorithms and computational problem solving.",
+    "Experienced applying analytical thinking to data, systems, decision-making, and software logic.",
+    "Provided tutoring support in mathematics including algebra, calculus, statistics, and analytical problem solving.",
+    "Tutored basic computer science concepts including programming fundamentals, logic, and problem-solving approaches.",
+  ],
+  "Military Professional": [
+    "Squad Leader: led, trained, coached, counseled, and mentored 8 to 30 Soldiers while supporting career growth, fitness planning, discipline, and standards compliance.",
+    "CVS Officer: processed and certified contractor payments while ensuring financial transactions and large budgets were managed accurately.",
+    "Unit Movement Officer: supported mobilization planning by entering inventory and equipment data, tracking movement requirements, maintaining accountability, and coordinating logistics.",
+    "Supply NCO: managed mission supply operations including equipment, vehicles, mileage logs, lodging, meals, logistics, and mission support resources.",
+    "Admin NCO: supported accountability, pay, leave, personnel tracking, and administrative requirements for Soldiers.",
+    "Information Management Officer: supported computer setup, laptop imaging, software installation, troubleshooting, networking, and system connectivity between platforms.",
+    "Certifier: reviewed transactions completed by junior Soldiers, verified documents, and certified financial transactions for accuracy.",
+    "Financial Clerk: managed accounting tasks, cash distribution, training data entry, systems updates, and customer service support.",
+  ],
+};
 
-  const experience = [
-    {
-      title: "Military Service and Leadership",
-      period: "12+ Years",
-      text: "Built leadership, planning, accountability, and execution skills through years of service in mission-focused environments.",
-    },
-    {
-      title: "Computer Science and Applied Mathematics",
-      period: "Academic Foundation",
-      text: "Developed technical depth in systems, software, and analytical thinking that now supports real-world product development.",
-    },
-    {
-      title: "Independent Product Builder",
-      period: "Current Focus",
-      text: "Designing and building practical software products in military fitness and military finance with long-term entrepreneurial intent.",
-    },
-  ];
+const projects = [
+  {
+    title: "RuckOn Fitness",
+    description:
+      "Military fitness tracking, ACFT scoring, workout planning, and performance analytics.",
+    link: "https://www.ruckonfitness.com/",
+    tags: ["Fitness", "Military", "Analytics"],
+  },
+  {
+    title: "MilPayRuck",
+    description:
+      "Military pay and finance optimization concept for service members.",
+    link: "#",
+    tags: ["Finance", "Military", "Product"],
+  },
+  {
+    title: "Trackademia",
+    description:
+      "Academic and performance tracking concept focused on progress and analytics.",
+    link: "#",
+    tags: ["Education", "Tracking", "Analytics"],
+  },
+];
 
-  const projects = [
+function ExperienceCard({ icon: Icon, title, children, active, onClick }) {
+  return (
+    <div className="rounded-2xl border border-lime-900/50 bg-black/30 p-6 shadow-lg shadow-black/20 backdrop-blur transition hover:-translate-y-1 hover:border-lime-500/60 hover:bg-lime-950/20">
+      <Icon className="mb-6 h-9 w-9 text-lime-500" />
+      <h3 className="mb-3 text-xl font-semibold text-white">{title}</h3>
+      <p className="min-h-24 text-sm leading-7 text-zinc-300">{children}</p>
+      <button
+        type="button"
+        onClick={onClick}
+        className="mt-6 text-sm font-semibold uppercase tracking-wide text-lime-400 transition hover:text-lime-300"
+      >
+        {active ? "Hide Details" : "Explore More"} <span className="ml-2">→</span>
+      </button>
+    </div>
+  );
+}
+
+export default function PortfolioHomepage() {
+  const [activeExperience, setActiveExperience] = useState("Project Management");
+
+  const experiences = [
     {
-      title: "RuckOn Fitness",
-      tag: "Military Fitness Platform",
-      link: "https://ruckonfitness.com",
-      image: "/projects/ruckonfitness-thumb.jpg",
-      description:
-        "A product focused on helping military personnel track readiness, improve performance, and build consistency through structured fitness tools.",
+      icon: Code2,
+      title: "Software Engineering",
+      summary:
+        "Building efficient, scalable and user-focused applications using modern technologies.",
     },
     {
-      title: "MilPayRuck",
-      tag: "Military Pay and Finance Tool",
-      link: "#",
-      image: "/projects/milpayruck-thumb.jpg",
-      description:
-        "A financial platform concept designed to make military pay, allowances, and planning easier to understand and use in everyday decisions.",
+      icon: Network,
+      title: "Project Management",
+      summary:
+        "Planning, executing and delivering projects with leadership, coordination and an Agile mindset.",
+    },
+    {
+      icon: Sigma,
+      title: "Mathematics & Analytics",
+      summary:
+        "Applied mathematics, problem solving, data analysis and modeling for decision making.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Military Professional",
+      summary:
+        "Leadership, discipline and operational experience gained through military service and deployments.",
     },
   ];
 
   return (
-    <div className="bg-[#ece8e1] text-[#25282d] antialiased">
-      <header className="fixed inset-x-0 top-0 z-50">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-          <a
-            href="#home"
-            className="border border-white/40 bg-black/15 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-white backdrop-blur-md"
-          >
-            Bhim KC
-          </a>
-          <nav className="hidden items-center gap-7 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/85 md:flex">
-            <a href="#about" className="transition hover:text-white">About</a>
-            <a href="#experience" className="transition hover:text-white">Experience</a>
-            <a href="#projects" className="transition hover:text-white">Projects</a>
-            <a href="#contact" className="transition hover:text-white">Contact</a>
-          </nav>
-        </div>
-      </header>
+    <main className="min-h-screen bg-[#06110d] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(132,204,22,0.18),transparent_35%),radial-gradient(circle_at_15%_30%,rgba(202,138,4,0.12),transparent_28%)]" />
 
-      <main>
-        <section
-          id="home"
-          className="relative flex min-h-screen items-center justify-center overflow-hidden bg-cover bg-center"
-          style={{ backgroundImage: `url(${profile.hero})` }}
-        >
-          <div className="absolute inset-0 bg-black/55" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_28%)]" />
-
-          <div className="relative mx-auto grid max-w-7xl gap-12 px-6 pt-28 pb-16 lg:grid-cols-[1.15fr_0.85fr] lg:px-10">
-            <div className="flex flex-col justify-center text-white">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-white/70">
-                {profile.role}
-              </p>
-              <h1 className="mt-6 max-w-4xl text-5xl font-light uppercase tracking-[0.08em] text-white sm:text-6xl lg:text-7xl">
-                Bhim KC
-              </h1>
-              <p className="mt-6 max-w-2xl text-xl leading-8 text-white/92 sm:text-2xl">
-                {profile.headline}
-              </p>
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-white/72 sm:text-base">
-                {profile.subheadline}
-              </p>
-
-              <div className="mt-10 flex flex-wrap gap-4">
-                <a
-                  href="#projects"
-                  className="border border-white bg-white px-6 py-3 text-[11px] font-bold uppercase tracking-[0.24em] text-black transition duration-300 hover:-translate-y-0.5"
-                >
-                  View Projects
-                </a>
-                <a
-                  href="#contact"
-                  className="border border-white/70 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.24em] text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-black"
-                >
-                  Contact
-                </a>
-              </div>
+      <div className="relative mx-auto max-w-7xl px-6">
+        <nav className="flex items-center justify-between border-b border-white/10 py-5">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-lime-600/40 bg-black/40 text-lime-400">
+              <ShieldCheck className="h-7 w-7" />
             </div>
-
-            <div className="flex items-center justify-center lg:justify-end">
-              <div className="w-full max-w-md border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-md">
-                <div className="mx-auto h-44 w-44 overflow-hidden rounded-full border-[6px] border-white/90 shadow-2xl">
-                  <img
-                    src={profile.image}
-                    alt="Bhim KC profile"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="mt-8 border-t border-white/15 pt-6 text-center text-white">
-                  <p className="text-[11px] uppercase tracking-[0.26em] text-white/60">Current Positioning</p>
-                  <p className="mt-4 text-base leading-7 text-white/85">
-                    A disciplined builder combining military leadership, technical structure, finance awareness, and entrepreneurial execution.
-                  </p>
-                </div>
+            <div>
+              <div className="text-2xl font-bold tracking-wide">BKC</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.28em] text-lime-500">
+                E6 / SSG
               </div>
             </div>
           </div>
-        </section>
 
-        <section className="bg-[#e5ddd1] py-8">
-          <div className="mx-auto grid max-w-7xl gap-px bg-black/10 px-6 md:grid-cols-3 lg:px-10">
-            {stats.map((item) => (
-              <div key={item.label} className="bg-[#f6f2eb] px-6 py-8 text-center">
-                <p className="text-3xl font-light text-[#23262c] sm:text-4xl">{item.value}</p>
-                <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#81776d]">
-                  {item.label}
+          <div className="hidden items-center gap-10 text-sm font-semibold uppercase tracking-wider text-zinc-200 md:flex">
+            <a href="#about" className="hover:text-lime-400">
+              About
+            </a>
+            <a href="#experience" className="hover:text-lime-400">
+              Experience
+            </a>
+            <a href="#projects" className="hover:text-lime-400">
+              Projects
+            </a>
+            <a href="#education" className="hover:text-lime-400">
+              Education
+            </a>
+            <a href="#contact" className="hover:text-lime-400">
+              Contact
+            </a>
+          </div>
+
+          <a
+            href="/resume.pdf"
+            className="hidden items-center gap-2 rounded-lg border border-lime-600/70 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-lime-300 transition hover:bg-lime-500 hover:text-black md:flex"
+          >
+            <Download className="h-4 w-4" /> Resume
+          </a>
+        </nav>
+
+        <section
+          id="about"
+          className="grid min-h-[620px] items-center gap-12 border-b border-white/10 py-16 lg:grid-cols-[1.05fr_0.95fr]"
+        >
+          <div>
+            <div className="mb-6 flex items-center gap-4 text-sm font-semibold uppercase tracking-[0.35em] text-lime-500">
+              Introduction <span className="h-px w-20 bg-lime-700/70" />
+            </div>
+
+            <h1 className="max-w-4xl text-6xl font-black tracking-tight text-white md:text-7xl lg:text-8xl">
+              Bhim Bahadur KC
+            </h1>
+
+            <p className="mt-7 text-lg font-medium text-lime-300">
+              Project Management <span className="mx-3 text-lime-700">•</span>
+              Technology <span className="mx-3 text-lime-700">•</span>
+              Military Operations <span className="mx-3 text-lime-700">•</span>
+              Analytics
+            </p>
+
+            <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-200 md:text-lg">
+              Military professional and aspiring project manager with a background in military finance,
+              software engineering, mathematics, and operational leadership. Experienced in managing
+              responsibilities in fast-paced environments, coordinating teams, solving analytical problems,
+              and developing technology-focused solutions. Passionate about leading projects that integrate
+              technology, operations, and strategic planning.
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-4">
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-3 rounded-lg bg-lime-700 px-6 py-4 font-bold uppercase tracking-wide text-white shadow-lg shadow-lime-950 transition hover:bg-lime-600"
+              >
+                <Grid2X2 className="h-5 w-5" /> View Projects
+              </a>
+              <a
+                href="/resume.pdf"
+                className="inline-flex items-center gap-3 rounded-lg border border-lime-700 px-6 py-4 font-bold uppercase tracking-wide text-lime-200 transition hover:bg-lime-500 hover:text-black"
+              >
+                <Download className="h-5 w-5" /> Download Resume
+              </a>
+            </div>
+
+            <div className="mt-10 grid max-w-2xl grid-cols-1 gap-5 text-sm sm:grid-cols-3">
+              <div className="rounded-xl border border-white/10 bg-black/25 p-4">
+                <div className="text-lime-400">Military Professional</div>
+                <div className="font-semibold text-white">U.S. Army</div>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-black/25 p-4">
+                <div className="text-lime-400">Current Rank</div>
+                <div className="font-semibold text-white">E6 / SSG</div>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-black/25 p-4">
+                <div className="text-lime-400">Based In</div>
+                <div className="font-semibold text-white">United States</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden rounded-3xl border border-lime-900/50 bg-black/30 p-8 shadow-2xl shadow-black/50 backdrop-blur lg:block">
+            <div className="grid gap-6">
+              <div className="rounded-2xl border border-lime-700/40 bg-black/35 p-5">
+                <div className="text-xs uppercase tracking-[0.25em] text-lime-500">
+                  Mission Focus
+                </div>
+                <ul className="mt-4 grid grid-cols-2 gap-3 text-sm text-zinc-300">
+                  <li>+ Leadership</li>
+                  <li>+ Planning</li>
+                  <li>+ Execution</li>
+                  <li>+ Results</li>
+                </ul>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-gradient-to-r from-lime-950/60 to-black/20 p-8">
+                <div className="text-7xl font-black leading-none text-white/10">BKC</div>
+                <p className="mt-4 text-lg leading-8 text-zinc-200">
+                  Discipline, leadership, technology, and analytical thinking applied to real-world project
+                  execution.
                 </p>
               </div>
-            ))}
+
+              <div className="rounded-2xl border border-lime-700/40 bg-black/35 p-5">
+                <div className="text-xs uppercase tracking-[0.25em] text-lime-500">
+                  Operations Overview
+                </div>
+                <div className="mt-5 grid grid-cols-1 gap-3 text-sm text-zinc-300 sm:grid-cols-2">
+                  <div>01 → Plan</div>
+                  <div>02 → Coordinate</div>
+                  <div>03 → Execute</div>
+                  <div>04 → Evaluate</div>
+                  <div>05 → Improve</div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="about" className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
-          <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8c8176]">About</p>
-            <h2 className="mt-4 text-4xl font-light uppercase tracking-[0.12em] text-[#23262c] sm:text-5xl">
-              Built on discipline, analysis, and execution
-            </h2>
-            <div className="mx-auto mt-8 h-[2px] w-24 bg-[#23262c]" />
+        <section id="experience" className="py-10">
+          <div className="mb-8 flex items-center gap-4 text-sm font-semibold uppercase tracking-[0.35em] text-lime-500">
+            Experience <span className="h-px w-20 bg-lime-700/70" />
           </div>
 
-          <div className="mt-16 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#8d8379]">Profile</p>
-              <ul className="mt-6 space-y-4 text-sm leading-7 text-[#50555d] sm:text-base">
-                <li>12+ years of military background and leadership experience</li>
-                <li>Strong finance understanding and interest in military financial systems</li>
-                <li>Academic background in Computer Science and Applied Mathematics</li>
-                <li>Building military-focused products with long-term entrepreneurial intent</li>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {experiences.map((item) => (
+              <ExperienceCard
+                key={item.title}
+                icon={item.icon}
+                title={item.title}
+                active={activeExperience === item.title}
+                onClick={() =>
+                  setActiveExperience(activeExperience === item.title ? "" : item.title)
+                }
+              >
+                {item.summary}
+              </ExperienceCard>
+            ))}
+          </div>
+
+          {activeExperience && (
+            <div className="mt-6 rounded-2xl border border-lime-900/60 bg-black/40 p-7 shadow-lg shadow-black/20">
+              <h3 className="text-2xl font-bold text-white">{activeExperience}</h3>
+              <ul className="mt-5 grid gap-3 text-sm leading-7 text-zinc-300 md:grid-cols-2">
+                {experienceDetails[activeExperience].map((detail) => (
+                  <li key={detail} className="flex gap-3">
+                    <span className="mt-2 h-2 w-2 flex-none rounded-full bg-lime-500" />
+                    <span>{detail}</span>
+                  </li>
+                ))}
               </ul>
             </div>
-
-            <div>
-              <p className="text-lg leading-9 text-[#41464d] sm:text-xl">
-                I am focused on the space where leadership, technology, and practical problem-solving meet. My background combines years of military service, analytical training in mathematics and computer science, and a builder mindset centered on creating real products that solve meaningful problems.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-16 grid gap-6 md:grid-cols-3">
-            {highlights.map((item) => (
-              <div key={item.title} className="border border-black/8 bg-white/60 p-8 shadow-sm backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#8d8379]">{item.title}</p>
-                <p className="mt-5 text-sm leading-8 text-[#565b62]">{item.text}</p>
-              </div>
-            ))}
-          </div>
+          )}
         </section>
 
-        <section id="experience" className="bg-[#f7f3ed] py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8c8176]">Experience</p>
-              <h2 className="mt-4 text-4xl font-light uppercase tracking-[0.12em] text-[#23262c] sm:text-5xl">
-                Background that supports leadership and product building
-              </h2>
-              <div className="mx-auto mt-8 h-[2px] w-24 bg-[#23262c]" />
+        <section id="projects" className="grid gap-6 border-t border-white/10 py-12 md:grid-cols-3">
+          {projects.map((project) => (
+            <div key={project.title} className="rounded-2xl border border-lime-900/50 bg-black/30 p-6">
+              <BriefcaseBusiness className="mb-5 h-8 w-8 text-lime-500" />
+              <h3 className="text-2xl font-bold">{project.title}</h3>
+              <p className="mt-4 leading-7 text-zinc-300">{project.description}</p>
+
+              <div className="mt-6 flex flex-wrap gap-2 text-xs uppercase tracking-wide text-lime-300">
+                {project.tags.map((tag) => (
+                  <span key={tag} className="rounded-full bg-lime-950 px-3 py-1">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {project.link !== "#" ? (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-block text-sm font-semibold uppercase tracking-wide text-lime-400 hover:text-lime-300"
+                >
+                  Visit Project →
+                </a>
+              ) : (
+                <span className="mt-6 inline-block text-sm font-semibold uppercase tracking-wide text-zinc-500">
+                  Coming Soon
+                </span>
+              )}
+            </div>
+          ))}
+        </section>
+
+        <section className="border-t border-white/10 py-12">
+          <div id="education" className="rounded-2xl border border-lime-900/50 bg-black/30 p-7">
+            <div className="mb-6 flex items-center gap-3 text-lime-400">
+              <GraduationCap />
+              <h2 className="text-2xl font-bold uppercase tracking-widest">Education</h2>
             </div>
 
-            <div className="mt-16 space-y-8">
-              {experience.map((item) => (
-                <div key={item.title} className="grid gap-5 border-b border-black/10 pb-8 md:grid-cols-[180px_1fr]">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#8c8176]">{item.period}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-light uppercase tracking-[0.1em] text-[#23262c]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-4 max-w-3xl text-sm leading-8 text-[#5b6168] sm:text-base">
-                      {item.text}
-                    </p>
-                  </div>
+            <div className="space-y-8 border-l border-lime-800 pl-6">
+              <div>
+                <div className="text-sm text-zinc-400">
+                  Queens College, City University of New York
+                </div>
+                <div className="mt-1 text-xl font-bold">
+                  Bachelor&apos;s Degree in Computer Science & Applied Mathematics
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm text-zinc-400">LaGuardia Community College</div>
+                <div className="mt-1 text-xl font-bold">
+                  Associate Degree in Liberal Arts: Math & Science
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm text-zinc-400">Additional Training</div>
+                <div className="mt-1 text-xl font-bold">
+                  Army Leadership, Finance and Technical Courses
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="interests" className="mt-6 rounded-2xl border border-lime-900/50 bg-black/30 p-7">
+            <div className="mb-6 flex items-center gap-3 text-lime-400">
+              <Star />
+              <h2 className="text-2xl font-bold uppercase tracking-widest">Interests</h2>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {[
+                "Distance Running & Military Fitness",
+                "Puzzle Solving & Analytical Thinking",
+                "Technology & Product Development",
+                "Leadership & Mentorship",
+                "Entrepreneurship & Operational Systems",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-xl border border-lime-900/40 bg-black/20 px-5 py-4 text-sm font-medium text-zinc-200"
+                >
+                  {item}
                 </div>
               ))}
             </div>
           </div>
-        </section>
 
-        <section id="projects" className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
-          <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8c8176]">Projects</p>
-            <h2 className="mt-4 text-4xl font-light uppercase tracking-[0.12em] text-[#23262c] sm:text-5xl">
-              Product work in motion
-            </h2>
-            <div className="mx-auto mt-8 h-[2px] w-24 bg-[#23262c]" />
-          </div>
+          <div id="certifications" className="mt-6 rounded-2xl border border-lime-900/50 bg-black/30 p-7">
+            <div className="mb-6 flex items-center gap-3 text-lime-400">
+              <GraduationCap />
+              <h2 className="text-2xl font-bold uppercase tracking-widest">Certifications</h2>
+            </div>
 
-          <div className="mt-16 grid gap-8 lg:grid-cols-2">
-            {projects.map((project) => (
-              <a
-                key={project.title}
-                href={project.link}
-                target={project.link.startsWith("http") ? "_blank" : "_self"}
-                rel={project.link.startsWith("http") ? "noreferrer" : undefined}
-                className="group overflow-hidden border border-black/10 bg-[#17191e] text-white shadow-xl transition duration-500 hover:-translate-y-1"
+            <div className="rounded-2xl border border-dashed border-lime-700/50 bg-black/20 p-8 text-center">
+              <p className="text-lg font-semibold text-white">Project Management Certifications</p>
+              <p className="mt-3 text-sm leading-7 text-zinc-400">
+                Future certifications such as Project Management, Agile, Scrum, and technical certifications
+                can be uploaded and displayed here with downloadable and viewable certificate previews.
+              </p>
+              <button
+                type="button"
+                className="mt-6 rounded-lg border border-lime-700 px-5 py-3 text-sm font-semibold uppercase tracking-wide text-lime-300 transition hover:bg-lime-500 hover:text-black"
               >
-                <div className="relative h-80 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="h-full w-full object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-95"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/65">
-                      {project.tag}
-                    </p>
-                    <h3 className="mt-3 text-3xl font-light uppercase tracking-[0.08em] text-white">
-                      {project.title}
-                    </h3>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-sm leading-8 text-white/78">{project.description}</p>
-                  <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/45">
-                    Open Project ↗
-                  </p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section id="contact" className="bg-[#242932] px-6 py-24 text-white lg:px-10">
-          <div className="mx-auto max-w-5xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#b8a68a]">Contact</p>
-            <h2 className="mt-4 text-4xl font-light uppercase tracking-[0.12em] text-white sm:text-5xl">
-              Let’s connect
-            </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-sm leading-8 text-white/72 sm:text-base">
-              Open to project management, product-focused opportunities, and conversations around building meaningful tools in military fitness and finance.
-            </p>
-
-            <div className="mx-auto mt-12 grid max-w-3xl gap-px bg-white/10 text-left md:grid-cols-3">
-              <a
-  href={`mailto:${profile.email}?subject=Portfolio Inquiry`}
-  className="block bg-white/5 p-6 transition hover:bg-white/10 cursor-pointer"
->
-  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/45">
-    Email
-  </p>
-  <p className="mt-3 text-sm break-all text-white/90">
-    {profile.email}
-  </p>
-</a>
-              <a href={profile.linkedin} className="bg-white/5 p-6 transition hover:bg-white/10">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/45">LinkedIn</p>
-                <p className="mt-3 text-sm text-white/90">View Profile</p>
-              </a>
-              <a href={profile.github} className="bg-white/5 p-6 transition hover:bg-white/10">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/45">GitHub</p>
-                <p className="mt-3 text-sm text-white/90">View Projects</p>
-              </a>
+                Upload Certificate
+              </button>
             </div>
           </div>
+
+          <div id="contact" className="mt-6 rounded-2xl border border-lime-900/50 bg-black/30 p-7">
+            <div className="mb-6 flex items-center gap-3 text-lime-400">
+              <Mail />
+              <h2 className="text-2xl font-bold uppercase tracking-widest">Contact</h2>
+            </div>
+
+            <div className="space-y-5 text-zinc-200">
+              <div className="flex items-center gap-4">
+                <Mail className="h-5 w-5 text-lime-500" />
+                <a href="mailto:bhim.b.kc90@gmail.com" className="hover:text-lime-400">
+                  bhim.b.kc90@gmail.com
+                </a>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span className="flex h-5 w-5 items-center justify-center rounded text-xs font-bold text-lime-500">
+                  in
+                </span>
+                <a
+                  href="https://www.linkedin.com/in/bhimkc/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-lime-400"
+                >
+                  linkedin.com/in/bhimkc
+                </a>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span className="flex h-5 w-5 items-center justify-center rounded text-xs font-bold text-lime-500">
+                  GH
+                </span>
+                <a
+                  href="https://github.com/Bhimkc90"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-lime-400"
+                >
+                  github.com/Bhimkc90
+                </a>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <MapPin className="h-5 w-5 text-lime-500" /> United States
+              </div>
+            </div>
+
+            <div id="resume" className="mt-10 rounded-2xl border border-dashed border-lime-700/50 bg-black/20 p-6">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h3 className="text-xl font-bold text-white">Resume</h3>
+                  <p className="mt-2 text-sm leading-7 text-zinc-400">
+                    Upload your resume as <span className="font-semibold text-lime-300">resume.pdf</span> inside the
+                    public folder so visitors can download it directly.
+                  </p>
+                </div>
+
+                <a
+                  href="/resume.pdf"
+                  download
+                  className="rounded-lg bg-lime-700 px-5 py-3 text-center text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-lime-600"
+                >
+                  Download Resume
+                </a>
+              </div>
+            </div>
+
+            <a
+              href="mailto:bhim.b.kc90@gmail.com"
+              className="mt-8 inline-flex items-center gap-3 rounded-lg border border-lime-700 px-6 py-3 font-bold uppercase tracking-wide text-lime-300 hover:bg-lime-500 hover:text-black"
+            >
+              <Star className="h-4 w-4" /> Get In Touch
+            </a>
+          </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
