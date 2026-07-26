@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bhim Bahadur KC",
+  title: "Bhim KC | Software Developer",
   description:
-    "Project Management, Technology, Military Operations and Analytics Portfolio",
+    "Software Developer and Computer Science graduate building practical technology solutions, web applications, and military-focused software.",
 };
 
 export default function RootLayout({
